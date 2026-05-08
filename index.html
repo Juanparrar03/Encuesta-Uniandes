@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiencia de almuerzo · Uniandes</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #0f0e0d;
+      --surface: #181714;
+      --surface2: #221f1b;
+      --border: #2e2a25;
+      --border2: #3d3830;
+      --gold: #c9973a;
+      --gold-l: #f2d98a;
+      --gold-dim: rgba(201, 151, 58, 0.15);
+      --cream: #f5f0e8;
+      --muted: #7a7265;
+      --muted2: #5a5348;
+      --green: #4caf82;
+      --green-dim: rgba(76, 175, 130, 0.15);
+      --r: 12px;
+      --r-lg: 20px;
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(201, 151, 58, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 90%, rgba(201, 151, 58, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Progress bar */
+    .progress-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--border);
+      z-index: 100;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-l));
+      transition: width .5s cubic-bezier(.4, 0, .2, 1);
+      width: 0%;
+    }
+
+    /* Layout */
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .survey-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .6s ease both;
+    }
+
+    .survey-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid rgba(201, 151, 58, 0.3);
+      border-radius: 20px;
+      padding: 5px 16px;
+      margin-bottom: 24px;
+    }
+
+    .survey-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .survey-title em {
+      font-style: italic;
+      color: var(--gold-l);
+    }
+
+    .survey-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .survey-meta {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .survey-meta span {
+      font-size: 12px;
+      color: var(--muted2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .survey-meta span::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: block;
+      flex-shrink: 0;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 48px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .section-num {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 6px;
+    }
+
+    .section-q {
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--cream);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .section-hint {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    /* Options grid */
+    .opts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .opts.grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px
+    }
+
+    .opts.grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px
+    }
+
+    @media(max-width:460px) {
+
+      .opts.grid-2,
+      .opts.grid-3 {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:360px) {
+
+      .opts.grid-2,
+      .opts.grid-3 {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .opt {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      padding: 13px 16px;
+      font-size: 14px;
+      color: var(--cream);
+      cursor: pointer;
+      transition: all .18s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .opt::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold-dim);
+      opacity: 0;
+      transition: opacity .18s;
+    }
+
+    .opt:hover {
+      border-color: var(--border2);
+      color: var(--cream)
+    }
+
+    .opt.sel {
+      border-color: var(--gold);
+      background: var(--surface2);
+      color: var(--cream);
+    }
+
+    .opt.sel::before {
+      opacity: 1
+    }
+
+    .opt-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border2);
+      flex-shrink: 0;
+      transition: all .18s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .opt.sel .opt-dot {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .opt.sel .opt-dot::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .opt-text {
+      position: relative;
+      z-index: 1;
+      line-height: 1.4
+    }
+
+    /* Checkbox variant */
+    .opt.checkbox .opt-dot {
+      border-radius: 4px
+    }
+
+    .opt.checkbox.sel .opt-dot {
+      background: var(--gold);
+      border-color: var(--gold)
+    }
+
+    /* Scale row */
+    .scale-wrap {
+      margin-top: 4px
+    }
+
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 10px
+    }
+
+    .scale-opts {
+      display: flex;
+      gap: 6px
+    }
+
+    .scale-opt {
+      flex: 1;
+      aspect-ratio: 1;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .18s;
+      color: var(--muted);
+    }
+
+    .scale-opt:hover {
+      border-color: var(--border2);
+      color: var(--cream)
+    }
+
+    .scale-opt.sel {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--bg);
+      font-weight: 700;
+      transform: scale(1.06);
+    }
+
+    /* Text area */
+    .txt-area {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--cream);
+      resize: vertical;
+      min-height: 90px;
+      outline: none;
+      transition: border-color .18s;
+      line-height: 1.6;
+    }
+
+    .txt-area::placeholder {
+      color: var(--muted2)
+    }
+
+    .txt-area:focus {
+      border-color: var(--gold)
+    }
+
+    /* Input text */
+    .txt-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--cream);
+      outline: none;
+      transition: border-color .18s;
+    }
+
+    .txt-input::placeholder {
+      color: var(--muted2)
+    }
+
+    .txt-input:focus {
+      border-color: var(--gold)
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+      opacity: .5;
+    }
+
+    /* Submit button */
+    .submit-wrap {
+      text-align: center;
+      padding-top: 16px
+    }
+
+    .submit-btn {
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--r-lg);
+      padding: 16px 48px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: .3px;
+    }
+
+    .submit-btn:hover {
+      background: var(--gold-l);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(201, 151, 58, 0.25);
+    }
+
+    .submit-note {
+      font-size: 12px;
+      color: var(--muted2);
+      margin-top: 12px;
+    }
+
+    /* Success screen */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 80px 24px;
+      animation: fadeUp .5s ease;
+    }
+
+    .success.show {
+      display: block
+    }
+
+    .success-icon {
+      font-size: 56px;
+      margin-bottom: 24px;
+      filter: grayscale(0);
+    }
+
+    .success h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+
+    .success p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .success-bar {
+      width: 48px;
+      height: 3px;
+      background: var(--gold);
+      border-radius: 2px;
+      margin: 20px auto 0;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .section:nth-child(1) {
+      animation-delay: .05s
+    }
+
+    .section:nth-child(2) {
+      animation-delay: .1s
+    }
+
+    .section:nth-child(3) {
+      animation-delay: .15s
+    }
+
+    .section:nth-child(4) {
+      animation-delay: .2s
+    }
+
+    .section:nth-child(5) {
+      animation-delay: .25s
+    }
+
+    .section:nth-child(6) {
+      animation-delay: .3s
+    }
+
+    .section:nth-child(7) {
+      animation-delay: .35s
+    }
+
+    .section:nth-child(8) {
+      animation-delay: .4s
+    }
+
+    .section:nth-child(9) {
+      animation-delay: .45s
+    }
+
+    .section:nth-child(10) {
+      animation-delay: .5s
+    }
+
+    /* Required asterisk */
+    .req {
+      color: var(--gold);
+      font-size: 13px;
+      margin-left: 3px
+    }
+
+    /* Counter */
+    .char-count {
+      font-size: 11px;
+      color: var(--muted2);
+      text-align: right;
+      margin-top: 5px
+    }
+
+    /* Pill multi-select */
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px
+    }
+
+    .pill {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .15s;
+      user-select: none;
+    }
+
+    .pill:hover {
+      border-color: var(--border2);
+      color: var(--cream)
+    }
+
+    .pill.sel {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--gold-l);
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="prog"></div>
+  </div>
+
+  <div class="wrap" id="form-wrap">
+    <div class="survey-header">
+      <div class="survey-tag">Uniandes · Investigación estudiantil</div>
+      <h1 class="survey-title">¿Cómo vives<br>la hora del <em>almuerzo</em>?</h1>
+      <p class="survey-desc">Estamos mapeando la experiencia del día a día en el campus. Tus respuestas son anónimas y
+        nos ayudan a entender qué funciona y qué no.</p>
+      <div class="survey-meta">
+        <span>Anónima</span>
+        <span>~4 minutos</span>
+        <span>12 preguntas</span>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="section">
+      <div class="section-num">01 / 12</div>
+      <div class="section-q">¿Cuántos días a la semana almuerzas en el campus?<span class="req">*</span></div>
+      <div class="section-hint">Promedio en un semestre normal.</div>
+      <div class="opts grid-3" data-q="q1" data-type="single">
+        <div class="opt" onclick="pick(this,'q1')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">1–2 días</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q1')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">3–4 días</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q1')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Todos los días</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="section">
+      <div class="section-num">02 / 12</div>
+      <div class="section-q">¿Dónde sueles almorzar?<span class="req">*</span></div>
+      <div class="section-hint">Puedes marcar varias opciones.</div>
+      <div class="pills" data-q="q2" data-type="multi">
+        <div class="pill" onclick="pillPick(this,'q2')">BOX Uniandes</div>
+        <div class="pill" onclick="pillPick(this,'q2')">Restaurantes cerca al campus</div>
+        <div class="pill" onclick="pillPick(this,'q2')">Traigo comida de casa</div>
+        <div class="pill" onclick="pillPick(this,'q2')">Cafetería de facultad</div>
+        <div class="pill" onclick="pillPick(this,'q2')">Domicilio al campus</div>
+        <div class="pill" onclick="pillPick(this,'q2')">No almuerzo / solo snacks</div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="section">
+      <div class="section-num">03 / 12</div>
+      <div class="section-q">¿A qué hora sueles ir a almorzar?<span class="req">*</span></div>
+      <div class="opts grid-2" data-q="q3" data-type="single">
+        <div class="opt" onclick="pick(this,'q3')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Antes de las 12pm</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q3')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">12:00 – 12:30pm</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q3')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">12:30 – 1:30pm</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q3')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Después de la 1:30pm</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="section">
+      <div class="section-num">04 / 12</div>
+      <div class="section-q">¿Cuánto tiempo tienes disponible para almorzar entre clases?<span class="req">*</span>
+      </div>
+      <div class="opts" data-q="q4" data-type="single">
+        <div class="opt" onclick="pick(this,'q4')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Menos de 30 minutos</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q4')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">30 – 45 minutos</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q4')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">45 min – 1 hora</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q4')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Más de 1 hora</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Q5 -->
+    <div class="section">
+      <div class="section-num">05 / 12</div>
+      <div class="section-q">Cuando vas al BOX, ¿qué es lo que más te genera estrés o fricción?<span
+          class="req">*</span></div>
+      <div class="section-hint">Marca todas las que apliquen.</div>
+      <div class="opts" data-q="q5" data-type="multi">
+        <div class="opt checkbox" onclick="multiPick(this,'q5')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">La fila para pedir o pagar</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q5')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">No saber cuánto tiempo voy a esperar</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q5')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Quedarme sin tiempo para comer tranquilo</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q5')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">No saber qué hay disponible antes de ir</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q5')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">La incertidumbre de si van a estar mis platos favoritos</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q5')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">El ruido y el caos del espacio</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q5')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Ninguno / no voy al BOX</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="section">
+      <div class="section-num">06 / 12</div>
+      <div class="section-q">¿Cuánto tiempo estimas que pierdes esperando cuando hay fila en el BOX?<span
+          class="req">*</span></div>
+      <div class="opts grid-2" data-q="q6" data-type="single">
+        <div class="opt" onclick="pick(this,'q6')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Casi nada (menos de 5 min)</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q6')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">5 – 15 minutos</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q6')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">15 – 25 minutos</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q6')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Más de 25 minutos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="section">
+      <div class="section-num">07 / 12</div>
+      <div class="section-q">¿Qué has hecho alguna vez por evitar o reducir el tiempo de espera?<span
+          class="req">*</span></div>
+      <div class="section-hint">Marca las que apliquen — sé honesto/a, no hay respuestas malas.</div>
+      <div class="opts" data-q="q7" data-type="multi">
+        <div class="opt checkbox" onclick="multiPick(this,'q7')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Ir muy temprano (antes del pico) aunque no tenga hambre</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q7')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Saltarme el almuerzo y comer snacks</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q7')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Comer por fuera del campus aunque sea más caro</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q7')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Mandar a alguien a pedir por mí</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q7')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Traer comida de casa para evitar el drama</div>
+        </div>
+        <div class="opt checkbox" onclick="multiPick(this,'q7')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Nunca he hecho nada diferente / no me molesta</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q8 — escala -->
+    <div class="section">
+      <div class="section-num">08 / 12</div>
+      <div class="section-q">¿Qué tanto impacta la fila en tu experiencia del día en la universidad?<span
+          class="req">*</span></div>
+      <div class="scale-wrap">
+        <div class="scale-labels"><span>No me afecta nada</span><span>Me afecta mucho</span></div>
+        <div class="scale-opts" data-q="q8" data-type="scale">
+          <div class="scale-opt" onclick="scalePick(this,'q8')">1</div>
+          <div class="scale-opt" onclick="scalePick(this,'q8')">2</div>
+          <div class="scale-opt" onclick="scalePick(this,'q8')">3</div>
+          <div class="scale-opt" onclick="scalePick(this,'q8')">4</div>
+          <div class="scale-opt" onclick="scalePick(this,'q8')">5</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Q9 -->
+    <div class="section">
+      <div class="section-num">09 / 12</div>
+      <div class="section-q">¿Con qué frecuencia pagas en el BOX con métodos digitales (Nequi, Daviplata, tarjeta)?<span
+          class="req">*</span></div>
+      <div class="opts" data-q="q9" data-type="single">
+        <div class="opt" onclick="pick(this,'q9')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Siempre — nunca uso efectivo</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q9')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">La mayoría de las veces</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q9')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Mitad y mitad</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q9')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">Casi siempre en efectivo</div>
+        </div>
+        <div class="opt" onclick="pick(this,'q9')">
+          <div class="opt-dot"></div>
+          <div class="opt-text">No voy al BOX</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="section">
+      <div class="section-num">10 / 12</div>
+      <div class="section-q">¿Qué tanta influencia tiene saber de antemano qué hay en el menú antes de ir?<span
+          class="req">*</span></div>
+      <div class="scale-wrap">
+        <div class="scale-labels"><span>Ninguna — igual voy</span><span>Mucha — lo decide todo</span></div>
+        <div class="scale-opts" data-q="q10" data-type="scale">
+          <div class="scale-opt" onclick="scalePick(this,'q10')">1</div>
+          <div class="scale-opt" onclick="scalePick(this,'q10')">2</div>
+          <div class="scale-opt" onclick="scalePick(this,'q10')">3</div>
+          <div class="scale-opt" onclick="scalePick(this,'q10')">4</div>
+          <div class="scale-opt" onclick="scalePick(this,'q10')">5</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="section">
+      <div class="section-num">11 / 12</div>
+      <div class="section-q">Imagina que pudieras cambiar una sola cosa de la experiencia de almuerzo en Uniandes. ¿Qué
+        sería?<span class="req">*</span></div>
+      <div class="section-hint">Respuesta abierta — sé tan específico/a como quieras.</div>
+      <textarea class="txt-area" id="q11"
+        placeholder="Ej: que hubiera menos fila a las 12, que supiera cuánto tiempo esperar, que se pudiera ver el menú antes..."
+        maxlength="400" oninput="countChars(this,'c11')"></textarea>
+      <div class="char-count" id="c11">0 / 400</div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="section">
+      <div class="section-num">12 / 12</div>
+      <div class="section-q">¿Algún otro comentario sobre la comida o la experiencia del campus?</div>
+      <div class="section-hint">Opcional — lo que quieras decirnos.</div>
+      <textarea class="txt-area" id="q12" placeholder="Cualquier cosa que sientas que no preguntamos..." maxlength="400"
+        oninput="countChars(this,'c12')"></textarea>
+      <div class="char-count" id="c12">0 / 400</div>
+    </div>
+
+    <div class="submit-wrap">
+      <button class="submit-btn" onclick="submitSurvey()">Enviar respuestas →</button>
+      <div class="submit-note">Anónima · Sin datos personales recolectados</div>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="success" id="success">
+    <div class="success-icon">🙌</div>
+    <h2>¡Gracias por tu tiempo!</h2>
+    <p>Tus respuestas nos ayudan a entender la experiencia real del campus. Muy pronto habrá novedades.</p>
+    <div class="success-bar"></div>
+  </div>
+
+  <script>
+    const answers = {};
+
+    function pick(el, q) {
+      el.closest('.opts').querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
+      el.classList.add('sel');
+      answers[q] = el.querySelector('.opt-text').textContent;
+      updateProgress();
+    }
+
+    function multiPick(el, q) {
+      el.classList.toggle('sel');
+      const sel = [...el.closest('.opts').querySelectorAll('.opt.sel')].map(o => o.querySelector('.opt-text').textContent);
+      answers[q] = sel;
+      updateProgress();
+    }
+
+    function pillPick(el, q) {
+      el.classList.toggle('sel');
+      const sel = [...el.closest('.pills').querySelectorAll('.pill.sel')].map(o => o.textContent);
+      answers[q] = sel;
+      updateProgress();
+    }
+
+    function scalePick(el, q) {
+      el.closest('.scale-opts').querySelectorAll('.scale-opt').forEach(o => o.classList.remove('sel'));
+      el.classList.add('sel');
+      answers[q] = el.textContent;
+      updateProgress();
+    }
+
+    function countChars(ta, cid) {
+      document.getElementById(cid).textContent = ta.value.length + ' / 400';
+      if (ta.id) answers[ta.id] = ta.value;
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const total = 12;
+      const filled = Object.keys(answers).filter(k => {
+        const v = answers[k];
+        if (Array.isArray(v)) return v.length > 0;
+        return v && v.trim() !== '';
+      }).length;
+      const pct = Math.round((filled / total) * 100);
+      document.getElementById('prog').style.width = pct + '%';
+    }
+
+    // ▶ PASO 1: Pega aquí la URL de tu Google Apps Script (ver instrucciones abajo)
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzvs_KSPGgrAeSDttxYoWcGGsyQB782xJu1lwwqaAwO6YvePbWMikzGg9ILAtWumKmG/exec';
+
+    async function submitSurvey() {
+      const required = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11'];
+      const missing = required.filter(q => {
+        const v = answers[q];
+        if (!v) return true;
+        if (Array.isArray(v)) return v.length === 0;
+        return v.trim() === '';
+      });
+      if (missing.length > 0) {
+        alert(`Faltan ${missing.length} pregunta(s) requeridas. Revisa que hayas respondido todo 🙏`);
+        return;
+      }
+
+      // Deshabilitar botón mientras envía
+      const btn = document.querySelector('.submit-btn');
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+
+      // Preparar payload con timestamp y respuestas
+      const payload = {
+        timestamp: new Date().toISOString(),
+        q1_dias_campus: answers.q1 || '',
+        q2_donde_almuerza: Array.isArray(answers.q2) ? answers.q2.join(' | ') : (answers.q2 || ''),
+        q3_hora_almuerzo: answers.q3 || '',
+        q4_tiempo_disponible: answers.q4 || '',
+        q5_friccion_box: Array.isArray(answers.q5) ? answers.q5.join(' | ') : (answers.q5 || ''),
+        q6_tiempo_perdido: answers.q6 || '',
+        q7_comportamientos: Array.isArray(answers.q7) ? answers.q7.join(' | ') : (answers.q7 || ''),
+        q8_impacto_fila: answers.q8 || '',
+        q9_pago_digital: answers.q9 || '',
+        q10_importancia_menu: answers.q10 || '',
+        q11_cambiaria: answers.q11 || '',
+        q12_comentarios: answers.q12 || '',
+      };
+
+      try {
+        // Google Apps Script solo acepta no-cors desde el browser;
+        // usamos fetch mode 'no-cors' — la respuesta es opaca pero el dato llega.
+        await fetch(SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        // Si llega aquí sin lanzar excepción, consideramos éxito
+        document.getElementById('form-wrap').style.display = 'none';
+        document.getElementById('success').classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        btn.textContent = 'Enviar respuestas →';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        alert('Hubo un error al enviar. Revisa tu conexión e intenta de nuevo.');
+        console.error(err);
+      }
+    }
+
+    // Track q11/q12 text inputs
+    document.getElementById('q11').addEventListener('input', function () { answers['q11'] = this.value; updateProgress(); });
+    document.getElementById('q12').addEventListener('input', function () { answers['q12'] = this.value; updateProgress(); });
+  </script>
+</body>
+
+</html>
