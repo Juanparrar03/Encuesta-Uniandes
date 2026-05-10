@@ -628,12 +628,13 @@
       <div class="section-q">¿Dónde sueles almorzar?<span class="req">*</span></div>
       <div class="section-hint">Puedes marcar varias opciones.</div>
       <div class="pills" data-q="q2" data-type="multi">
-        <div class="pill" onclick="pillPick(this,'q2')">BOX Uniandes</div>
-        <div class="pill" onclick="pillPick(this,'q2')">Restaurantes cerca al campus</div>
+        <div class="pill" onclick="pillPick(this,'q2')">BOX Plaza</div>
+        <div class="pill" onclick="pillPick(this,'q2')">Restaurantes cerca a la u</div>
         <div class="pill" onclick="pillPick(this,'q2')">Traigo comida de casa</div>
-        <div class="pill" onclick="pillPick(this,'q2')">Cafetería de facultad</div>
-        <div class="pill" onclick="pillPick(this,'q2')">Domicilio al campus</div>
-        <div class="pill" onclick="pillPick(this,'q2')">No almuerzo / solo snacks</div>
+        <div class="pill" onclick="pillPick(this,'q2')">Restaurantes dentro de la u</div>
+        <div class="pill" onclick="pillPick(this,'q2')">Domicilio a la u </div>
+        <div class="pill" onclick="pillPick(this,'q2')">No almuerzo en la u</div>
+        <div class="pill" onclick="pillPick(this,'q2')">Puestos de comida en el eje</div>
       </div>
     </div>
 
@@ -691,7 +692,7 @@
     <!-- Q5 -->
     <div class="section">
       <div class="section-num">05 / 12</div>
-      <div class="section-q">Cuando vas al BOX, ¿qué es lo que más te genera estrés o fricción?<span
+      <div class="section-q">Cuando vas a comprar almuerzo, ¿qué es lo que más te genera estrés?<span
           class="req">*</span></div>
       <div class="section-hint">Marca todas las que apliquen.</div>
       <div class="opts" data-q="q5" data-type="multi">
@@ -721,7 +722,7 @@
         </div>
         <div class="opt checkbox" onclick="multiPick(this,'q5')">
           <div class="opt-dot"></div>
-          <div class="opt-text">Ninguno / no voy al BOX</div>
+          <div class="opt-text">Nada me genera estres</div>
         </div>
       </div>
     </div>
@@ -729,7 +730,7 @@
     <!-- Q6 -->
     <div class="section">
       <div class="section-num">06 / 12</div>
-      <div class="section-q">¿Cuánto tiempo estimas que pierdes esperando cuando hay fila en el BOX?<span
+      <div class="section-q">¿Cuánto tiempo estimas que pierdes esperando tu comida?<span
           class="req">*</span></div>
       <div class="opts grid-2" data-q="q6" data-type="single">
         <div class="opt" onclick="pick(this,'q6')">
@@ -768,7 +769,7 @@
         </div>
         <div class="opt checkbox" onclick="multiPick(this,'q7')">
           <div class="opt-dot"></div>
-          <div class="opt-text">Comer por fuera del campus aunque sea más caro</div>
+          <div class="opt-text"> Dejar de comer en la U </div>
         </div>
         <div class="opt checkbox" onclick="multiPick(this,'q7')">
           <div class="opt-dot"></div>
@@ -776,7 +777,7 @@
         </div>
         <div class="opt checkbox" onclick="multiPick(this,'q7')">
           <div class="opt-dot"></div>
-          <div class="opt-text">Traer comida de casa para evitar el drama</div>
+          <div class="opt-text">Traer comida de casa para evitar las filas</div>
         </div>
         <div class="opt checkbox" onclick="multiPick(this,'q7')">
           <div class="opt-dot"></div>
@@ -788,7 +789,7 @@
     <!-- Q8 — escala -->
     <div class="section">
       <div class="section-num">08 / 12</div>
-      <div class="section-q">¿Qué tanto impacta la fila en tu experiencia del día en la universidad?<span
+      <div class="section-q">¿Qué tanto impactan los tiempos de espera de la comida en tu percepción de la comida?<span
           class="req">*</span></div>
       <div class="scale-wrap">
         <div class="scale-labels"><span>No me afecta nada</span><span>Me afecta mucho</span></div>
@@ -807,7 +808,7 @@
     <!-- Q9 -->
     <div class="section">
       <div class="section-num">09 / 12</div>
-      <div class="section-q">¿Con qué frecuencia pagas en el BOX con métodos digitales (Nequi, Daviplata, tarjeta)?<span
+      <div class="section-q">¿Con qué frecuencia pagas tu almuerzo con métodos digitales (Nequi, Daviplata, tarjeta)?<span
           class="req">*</span></div>
       <div class="opts" data-q="q9" data-type="single">
         <div class="opt" onclick="pick(this,'q9')">
@@ -853,7 +854,7 @@
     <!-- Q11 -->
     <div class="section">
       <div class="section-num">11 / 12</div>
-      <div class="section-q">Imagina que pudieras cambiar una sola cosa de la experiencia de almuerzo en Uniandes. ¿Qué
+      <div class="section-q">Imagina que pudieras cambiar una sola cosa de la experiencia de almorzar en la U. ¿Qué
         sería?<span class="req">*</span></div>
       <div class="section-hint">Respuesta abierta — sé tan específico/a como quieras.</div>
       <textarea class="txt-area" id="q11"
@@ -865,7 +866,7 @@
     <!-- Q12 -->
     <div class="section">
       <div class="section-num">12 / 12</div>
-      <div class="section-q">¿Algún otro comentario sobre la comida o la experiencia del campus?</div>
+      <div class="section-q">¿Algún otro comentario sobre la comida o de la experiencia gastronómica en la U ?</div>
       <div class="section-hint">Opcional — lo que quieras decirnos.</div>
       <textarea class="txt-area" id="q12" placeholder="Cualquier cosa que sientas que no preguntamos..." maxlength="400"
         oninput="countChars(this,'c12')"></textarea>
